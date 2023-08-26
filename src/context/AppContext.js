@@ -1,5 +1,8 @@
 import React, { createContext, useReducer } from 'react';
 
+// STEP7 - create reducer to take in new actions and update state
+// uses payload of dispatch() to determine action and added info, returns new state
+// action and payload
 // 5. The reducer - this is used to update the state, based on the action
 export const AppReducer = (state, action) => {
     let budget = 0;
@@ -9,11 +12,10 @@ export const AppReducer = (state, action) => {
             total_budget = state.expenses.reduce(
                 (previousExp, currentExp) => {
                     return previousExp + currentExp.cost
-                },0
-            );
+                }, 0);
             total_budget = total_budget + action.payload.cost;
             action.type = "DONE";
-            if(total_budget <= state.budget) {
+            if(total_budget <= state.budget) { // with new expense still under budget
                 total_budget = 0;
                 state.expenses.map((currentExp)=> {
                     if(currentExp.name === action.payload.name) {
@@ -30,7 +32,7 @@ export const AppReducer = (state, action) => {
                     ...state
                 }
             }
-            case 'RED_EXPENSE':
+        case 'RED_EXPENSE':
                 const red_expenses = state.expenses.map((currentExp)=> {
                     if (currentExp.name === action.payload.name && currentExp.cost - action.payload.cost >= 0) {
                         currentExp.cost =  currentExp.cost - action.payload.cost;
@@ -43,11 +45,11 @@ export const AppReducer = (state, action) => {
                     ...state,
                     expenses: [...red_expenses],
                 };
-            case 'DELETE_EXPENSE':
+        case 'DELETE_EXPENSE':
             action.type = "DONE";
             state.expenses.map((currentExp)=> {
                 if (currentExp.name === action.payload) {
-                    budget = state.budget + currentExp.cost
+                    budget = state.budget + currentExp.cost; // remove expenses, add back to budget
                     currentExp.cost =  0;
                 }
                 return currentExp
@@ -76,6 +78,7 @@ export const AppReducer = (state, action) => {
     }
 };
 
+// STEP4 - this is the initial state that will be held by redux
 // 1. Sets the initial state when the app loads
 const initialState = {
     budget: 2000,
@@ -89,18 +92,22 @@ const initialState = {
     currency: '£'
 };
 
+// STEP5 - use context to make data available for components that import it
 // 2. Creates the context this is the thing our components import and use to get the state
 export const AppContext = createContext();
 
+// STEP6 - wrapped around App.js to give child components ability to access state
 // 3. Provider component - wraps the components we want to give access to the state
 // Accepts the children, which are the nested(wrapped) components
 export const AppProvider = (props) => {
     // 4. Sets up the app state. takes a reducer, and an initial state
+    // STEP - define "state" and "dispatch" function to call reducer
     const [state, dispatch] = useReducer(AppReducer, initialState);
     let remaining = 0;
 
+    // adds some new state initial variables
     if (state.expenses) {
-            const totalExpenses = state.expenses.reduce((total, item) => {
+        const totalExpenses = state.expenses.reduce((total, item) => {
             return (total = total + item.cost);
         }, 0);
         remaining = state.budget - totalExpenses;

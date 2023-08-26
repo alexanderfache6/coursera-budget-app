@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+// STEP1 - add App.js to index.js to show up
 root.render(
   <React.StrictMode>
     <App />
