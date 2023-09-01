@@ -32,7 +32,7 @@ export const AppReducer = (state, action) => {
                     ...state
                 }
             }
-        case 'RED_EXPENSE':
+        case 'REDUCE_EXPENSE':
                 const red_expenses = state.expenses.map((currentExp)=> {
                     if (currentExp.name === action.payload.name && currentExp.cost - action.payload.cost >= 0) {
                         currentExp.cost =  currentExp.cost - action.payload.cost;
@@ -89,7 +89,7 @@ const initialState = {
         { id: "Human Resource", name: 'Human Resource', cost: 40 },
         { id: "IT", name: 'IT', cost: 500 },
     ],
-    currency: '£'
+    currency: '$'
 };
 
 // STEP5 - use context to make data available for components that import it
