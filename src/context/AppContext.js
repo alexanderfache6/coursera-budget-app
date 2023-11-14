@@ -89,7 +89,8 @@ const initialState = {
         { id: "Human Resource", name: 'Human Resource', cost: 40 },
         { id: "IT", name: 'IT', cost: 500 },
     ],
-    currency: '$'
+    currency: '$',
+    budgetUpperLimit: 20000
 };
 
 // STEP5 - use context to make data available for components that import it
@@ -120,7 +121,8 @@ export const AppProvider = (props) => {
                 budget: state.budget,
                 remaining: remaining,
                 dispatch,
-                currency: state.currency
+                currency: state.currency,
+                budgetUpperLimit: state.budgetUpperLimit
             }}
         >
             {props.children}
