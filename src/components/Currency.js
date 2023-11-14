@@ -1,38 +1,42 @@
-import React, { useContext } from 'react';
+// https://react-bootstrap.github.io/docs/components/dropdowns/
+
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 const Currency = () => {
     const { currency } = useContext(AppContext);
-
-    // const [newCurrency, setNewCurrency] = useState(currency);
-
     
+    const [currencyLong, setCurrencyLong] = useState();
+
+    useEffect(() => {
+        switch (currency) {
+            case '$':
+                setCurrencyLong('$ Dollar');
+                break;
+            case '£':
+                setCurrencyLong('£ Pound');
+                break;
+            case '€':
+                setCurrencyLong('€ Euro');
+                break;
+            case '₹':
+                setCurrencyLong('₹ Ruppee');
+                break;
+        }
+    }, [currency]);
 
     return (
-        // <div className="dropdown">
-        //     <a className="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        //         {currency}
-        //     </a>
-        //     <ul className="dropdown-menu">
-        //         <li><a className="dropdown-item" href="#">Action</a></li>
-        //         <li><a className="dropdown-item" href="#">Another action</a></li>
-        //         <li><a className="dropdown-item" href="#">Something else here</a></li>
-        //     </ul>
-        // </div>
-
-        <div className="dropdown">
-  <button className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-  <span className="caret"></span></button>
-  <ul className="dropdown-menu">
-    <li><a href="#">HTML</a></li>
-    <li><a href="#">CSS</a></li>
-    <li><a href="#">JavaScript</a></li>
-  </ul>
-</div>
-
-        // <div classNameName='alert alert-secondary'>
-        //     <span>Currency: {currency}</span>
-        // </div>
+        <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">Currency ({currencyLong})</Dropdown.Toggle>
+            <Dropdown.Menu>
+                <Dropdown.Item value="$">$ Dollar</Dropdown.Item>
+                <Dropdown.Item value="£">£ Pound</Dropdown.Item>
+                <Dropdown.Item value="€">€ Euro</Dropdown.Item>
+                <Dropdown.Item value="₹">₹ Ruppee</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
     );
 };
+
 export default Currency;
